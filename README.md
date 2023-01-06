@@ -6,5 +6,4 @@ Terraform. But updating the image is an app deployment that depends on the infra
 Terraform. Just kinda do it all twice and it'll be happy. Only a problem on initial deploy.
 
 0. `make infra`
-1. `make build`
-2. `make deploy`
+1. `make deploy`

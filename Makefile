@@ -2,7 +2,7 @@ ACCT_ID = 613475857488
 GOARCH = amd64 
 GOOS = linux
 
-build:
+build_container:
 	GOOS=$(GOOS) GOARCH=$(GOARCH) docker build -t dupyeeter . --platform=linux/amd64
 
 docker_login:
@@ -14,7 +14,6 @@ deploy_ecr:
 	docker push $(ACCT_ID).dkr.ecr.us-east-1.amazonaws.com/dupyeeter:latest
 	docker push $(ACCT_ID).dkr.ecr.us-east-1.amazonaws.com/dupyeeter:latest
 
-# TODO delete old functions
 update_lambda:
 	aws --profile dupyeeter-deploy lambda update-function-code --region us-east-1 --function-name dupyeeter \
    --image-uri $(ACCT_ID).dkr.ecr.us-east-1.amazonaws.com/dupyeeter:latest   \
@@ -22,5 +21,7 @@ update_lambda:
 infra:
 	cd terraform/; terraform apply; cd -
 
-deploy: deploy_ecr update_lambda
+deploy: build_container deploy_ecr update_lambda
 
+test:
+	go test ./...
